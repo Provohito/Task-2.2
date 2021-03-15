@@ -12,6 +12,8 @@ public class BotAgentScript : MonoBehaviour
 	[SerializeField]
 	GameObject player;
 
+	float rotationSpeed = 4;
+
 	Vector3 startPointBot;
 	Vector3 endPointBot;
 	int timeWait = 3;
@@ -52,6 +54,7 @@ public class BotAgentScript : MonoBehaviour
 		{
 			//animator.SetBool("attack", false);//тогда выключаем анимацию атаки (если была включена), добавил я от себя
 			botAgent.destination = player.transform.position; //и передаем агенту навигации координаты игрока, чтобы идти к нему
+			SetRotation(player.transform.position);
 		}
 		else
 		{
@@ -64,12 +67,17 @@ public class BotAgentScript : MonoBehaviour
 				Move(startPointBot);
 			}
 		}
-
-
 	}
 
 	void Move(Vector3 moveVector)
     {
 		botAgent.SetDestination(moveVector);
+	}
+
+	void SetRotation(Vector3 lookAt)
+	{
+		Vector3 targetPoint = player.transform.position;
+		Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime) * Quaternion.Euler(0.0f, 30f,  2 * Time.deltaTime);
 	}
 }
