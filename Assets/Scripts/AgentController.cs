@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 
 public class AgentController : MonoBehaviour
@@ -11,6 +12,16 @@ public class AgentController : MonoBehaviour
 
     NavMeshAgent agent;
     Animator agentAnimator;
+    [Header("Работа с Hp персонажа")]
+    [SerializeField] private Text currentHPText;
+    [SerializeField] private Slider sliderHP;
+    [SerializeField] private GameObject player;
+
+    [Space(10)]
+    [SerializeField] private int maxHP;
+    [SerializeField] private int minHP;
+
+    public int currentHP;
 
     private void Awake()
     {
@@ -18,9 +29,17 @@ public class AgentController : MonoBehaviour
         agentAnimator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        sliderHP.maxValue = maxHP;
+        sliderHP.minValue = minHP;
+
+        currentHP = maxHP;
+    }
+
     private void Update()
     {
-        Debug.Log(agent.remainingDistance);
+        
         if (Input.GetMouseButtonDown(0))
         {
             
@@ -44,5 +63,26 @@ public class AgentController : MonoBehaviour
             Debug.Log("stop");
             agentAnimator.SetBool("walk", false);
         }
+
+        sliderHP.value = currentHP;
+        currentHPText.GetComponent<Text>().text = string.Format("{0:0}", currentHP);
+
+        HPCheck();
+        PlayerDeath();
     }
+    private void HPCheck()
+    {
+        if (currentHP >= maxHP)
+            currentHP = maxHP;
+    }
+
+    private void PlayerDeath()
+    {
+        if (currentHP <= minHP)
+        {
+            currentHP = minHP;
+            Destroy(player);
+        }
+    }
+
 }

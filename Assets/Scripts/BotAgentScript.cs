@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BotAgentScript : MonoBehaviour
 {
@@ -21,7 +22,12 @@ public class BotAgentScript : MonoBehaviour
 
 	bool isTarget;
 
+
+
 	float visible = 8f;// Видимость бота
+
+
+
 
 	private void Awake()
     {
@@ -31,6 +37,7 @@ public class BotAgentScript : MonoBehaviour
 	{
 		startPointBot = transform.position;
 		endPointBot = new Vector3(pointToMove, transform.position.y, transform.position.z);
+
 	}
 
 	void Update()
@@ -44,8 +51,9 @@ public class BotAgentScript : MonoBehaviour
 		
 
 		float distance = Vector3.Distance(transform.position, player.transform.position);
-		if (distance < 1f) //если дистанция меньше указанного значения
+		if (distance < 2f) //если дистанция меньше указанного значения
 		{
+			StartCoroutine(DamageToAgent());
 			//animator.SetBool("attack", true); //тут я поставил, чтобы проигрывалась анимация атаки, но она проигрывается 1 раз без зацикливания, поэтому выключил
 			//Player.SetHPPlayer(damage); //тогда наносим дамаг игроку, вызывая фукнцию в его скрипте (должен быть прикреплен к нему на инспекторе), название функции можете прописать свое, главное сделайте ее в скрипте игрока
 
@@ -80,4 +88,10 @@ public class BotAgentScript : MonoBehaviour
 		Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime) * Quaternion.Euler(0.0f, 30f,  2 * Time.deltaTime);
 	}
+
+	IEnumerator DamageToAgent()
+    {
+		player.GetComponent<AgentController>().currentHP -= 1;
+		yield return new WaitForSeconds(0.01f);// Скорость анимации удара
+    }
 }
