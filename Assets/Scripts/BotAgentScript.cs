@@ -53,6 +53,7 @@ public class BotAgentScript : MonoBehaviour
 		float distance = Vector3.Distance(transform.position, player.transform.position);
 		if (distance < 2f) //если дистанция меньше указанного значения
 		{
+			
 			StartCoroutine(DamageToAgent());
 			//animator.SetBool("attack", true); //тут я поставил, чтобы проигрывалась анимация атаки, но она проигрывается 1 раз без зацикливания, поэтому выключил
 			//Player.SetHPPlayer(damage); //тогда наносим дамаг игроку, вызывая фукнцию в его скрипте (должен быть прикреплен к нему на инспекторе), название функции можете прописать свое, главное сделайте ее в скрипте игрока
@@ -91,7 +92,10 @@ public class BotAgentScript : MonoBehaviour
 
 	IEnumerator DamageToAgent()
     {
+		yield return new WaitForSeconds(2f);
 		player.GetComponent<AgentController>().currentHP -= 1;
-		yield return new WaitForSeconds(0.01f);// Скорость анимации удара
+		player.GetComponent<Animator>().Play("Reaction");
+		StopAllCoroutines();
+		// Скорость анимации удара
     }
 }

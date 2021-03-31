@@ -85,4 +85,9 @@ public class AgentController : MonoBehaviour
         }
     }
 
+    public void DamageHP()
+    {
+        currentHP -= 1;
+    }
+
 }
