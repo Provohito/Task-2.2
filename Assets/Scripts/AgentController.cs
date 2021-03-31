@@ -25,6 +25,9 @@ public class AgentController : MonoBehaviour
 
     public int currentHP;
 
+    [SerializeField]
+    GameObject uiController;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -97,6 +100,7 @@ public class AgentController : MonoBehaviour
         agentAnimator.Play("Dying");
         yield return new WaitForSeconds(4f);
         Destroy(player);
+        uiController.GetComponent<UiController>().OpenDiePanel();
     }
 
 }

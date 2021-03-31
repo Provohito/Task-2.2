@@ -370,6 +370,7 @@ MonoBehaviour:
   minHP: 0
   die: 0
   currentHP: 0
+  uiController: {fileID: 0}
 --- !u!195 &80377531
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3616,6 +3617,7 @@ MonoBehaviour:
   minHP: 0
   die: 0
   currentHP: 0
+  uiController: {fileID: 1894653156}
 --- !u!1 &681589797
 GameObject:
   m_ObjectHideFlags: 0
@@ -8334,6 +8336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894653157}
+  - component: {fileID: 1894653158}
   m_Layer: 0
   m_Name: UIController
   m_TagString: Untagged
@@ -8355,6 +8358,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1894653158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894653156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac38c9de7a18434081faebd5e33a37f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  diePanel: {fileID: 2016254956}
 --- !u!1 &1913788211
 GameObject:
   m_ObjectHideFlags: 0
@@ -9116,7 +9132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2016254957
 RectTransform:
   m_ObjectHideFlags: 0
