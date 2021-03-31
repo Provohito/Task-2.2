@@ -21,6 +21,8 @@ public class AgentController : MonoBehaviour
     [SerializeField] private int maxHP;
     [SerializeField] private int minHP;
 
+    public bool die;
+
     public int currentHP;
 
     private void Awake()
@@ -47,10 +49,8 @@ public class AgentController : MonoBehaviour
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
-            {
-                
-                agent.SetDestination(hit.point);
-                
+            { 
+                agent.SetDestination(hit.point);      
             }
             
         }
@@ -60,7 +60,6 @@ public class AgentController : MonoBehaviour
         }
         if (agent.remainingDistance <= 1)
         {
-            Debug.Log("stop");
             agentAnimator.SetBool("walk", false);
         }
 
@@ -81,13 +80,23 @@ public class AgentController : MonoBehaviour
         if (currentHP <= minHP)
         {
             currentHP = minHP;
-            Destroy(player);
+            
+            if (die == false)
+            {
+                die = true;
+                StopAllCoroutines();
+                StartCoroutine(DieAgent());
+            }
+            
         }
     }
 
-    public void DamageHP()
+    IEnumerator DieAgent()
     {
-        currentHP -= 1;
+        yield return new WaitForSeconds(1f);
+        agentAnimator.Play("Dying");
+        yield return new WaitForSeconds(4f);
+        Destroy(player);
     }
 
 }
