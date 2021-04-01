@@ -90,7 +90,7 @@ public class BotAgentScript : MonoBehaviour
 	{
 		Vector3 targetPoint = player.transform.position;
 		Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
-		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime) * Quaternion.Euler(0.0f, 30f,  2 * Time.deltaTime);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
 	}
 
 	IEnumerator DamageToAgent()
