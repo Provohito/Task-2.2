@@ -22,26 +22,50 @@ public class BotAgentScript : MonoBehaviour
 
 	bool isTarget;
 
-
+	Animator botAnimator;
 
 	float visible = 8f;// Видимость бота
+	[Header("Работа с Hp персонажа")]
+	[SerializeField] private Text currentHPText;
+	[SerializeField] private Slider sliderHP;
 
 
+	[Space(10)]
+	[SerializeField] private int maxHP;
+	[SerializeField] private int minHP;
+
+	bool die;
+
+	public int currentHP;
+
+	[SerializeField]
+	GameObject uiController;
+	[SerializeField]
+	GameObject diePanel;
 
 
 	private void Awake()
     {
 		botAgent = GetComponent<NavMeshAgent>();
+		botAnimator = GetComponent<Animator>();
 	}
     void Start()
 	{
 		startPointBot = transform.position;
 		endPointBot = new Vector3(pointToMove, transform.position.y, transform.position.z);
 
+		sliderHP.maxValue = maxHP;
+		sliderHP.minValue = minHP;
+
+		currentHP = maxHP;
+
 	}
 
 	void Update()
 	{
+		HPCheck();
+		BotDeath();
+
 		curTimeout += Time.deltaTime;
 		if (!botAgent.hasPath & curTimeout > timeWait)
 		{
@@ -55,16 +79,14 @@ public class BotAgentScript : MonoBehaviour
 		{
             if (player.GetComponent<AgentController>().currentHP != 0)
 			{ 
-				StartCoroutine(DamageToAgent());
+				StartCoroutine(DamageTake());
+				botAnimator.SetBool("isFight", true);
+				player.GetComponent<Animator>().Play("Boxing");
 			}
-			
-			//animator.SetBool("attack", true); //тут я поставил, чтобы проигрывалась анимация атаки, но она проигрывается 1 раз без зацикливания, поэтому выключил
-			//Player.SetHPPlayer(damage); //тогда наносим дамаг игроку, вызывая фукнцию в его скрипте (должен быть прикреплен к нему на инспекторе), название функции можете прописать свое, главное сделайте ее в скрипте игрока
-
 		}
 		else if (distance < visible) //если дистанция до игрока меньше радиуса видимости
 		{
-			//animator.SetBool("attack", false);//тогда выключаем анимацию атаки (если была включена), добавил я от себя
+			
 			botAgent.destination = player.transform.position; //и передаем агенту навигации координаты игрока, чтобы идти к нему
 			SetRotation(player.transform.position);
 		}
@@ -79,6 +101,12 @@ public class BotAgentScript : MonoBehaviour
 				Move(startPointBot);
 			}
 		}
+
+		sliderHP.value = currentHP;
+		currentHPText.GetComponent<Text>().text = string.Format("{0:0}", currentHP);
+
+
+		
 	}
 
 	void Move(Vector3 moveVector)
@@ -93,12 +121,42 @@ public class BotAgentScript : MonoBehaviour
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
 	}
 
-	IEnumerator DamageToAgent()
+	IEnumerator DamageTake()
     {
-		yield return new WaitForSeconds(2f);
-		player.GetComponent<AgentController>().currentHP -= 20;
-		player.GetComponent<Animator>().Play("Reaction");
+		yield return new WaitForSeconds(1f);
+		player.GetComponent<AgentController>().currentHP -= Random.Range(1,15);
+		currentHP -= Random.Range(20, 50);
 		StopAllCoroutines();
-		// Скорость анимации удара
     }
+	private void HPCheck()
+	{
+		if (currentHP >= maxHP)
+			currentHP = maxHP;
+	}
+
+	private void BotDeath()
+	{
+		if (currentHP <= minHP)
+		{
+			currentHP = minHP;
+			die = true;
+			StopAllCoroutines();
+			StartCoroutine(DieBot());
+			
+
+		}
+	}
+	
+	IEnumerator DieBot()
+	{
+
+		botAnimator.Play("Flying Back Death");
+		player.GetComponent<Animator>().Play("Idle");
+		Debug.Log("Die");
+		Destroy(this.gameObject);
+		//uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
+		yield return new WaitForSeconds(0.5f);
+	}
+
+
 }

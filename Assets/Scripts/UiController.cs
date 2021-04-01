@@ -6,17 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class UiController : MonoBehaviour
 {
-    [SerializeField]
-    GameObject diePanel;
 
-    public void OpenDiePanel()
+    public void OpenDiePanel(GameObject panel)
     {
         Time.timeScale = 0;
-        diePanel.SetActive(true);
+        panel.SetActive(true);
     }
 
     public void ResetGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 }

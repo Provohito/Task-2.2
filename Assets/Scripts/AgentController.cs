@@ -27,6 +27,9 @@ public class AgentController : MonoBehaviour
 
     [SerializeField]
     GameObject uiController;
+    [SerializeField]
+    GameObject diePanel;
+
 
     private void Awake()
     {
@@ -100,7 +103,9 @@ public class AgentController : MonoBehaviour
         agentAnimator.Play("Dying");
         yield return new WaitForSeconds(4f);
         Destroy(player);
-        uiController.GetComponent<UiController>().OpenDiePanel();
+        uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
     }
+
+    
 
 }
