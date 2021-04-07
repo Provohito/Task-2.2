@@ -29,6 +29,8 @@ public class AgentController : MonoBehaviour
     [SerializeField]
     GameObject diePanel;
 
+    float distance;
+    GameObject bot;
 
     private void Awake()
     {
@@ -45,7 +47,6 @@ public class AgentController : MonoBehaviour
 
     private void Update()
     {
-        
         if (Input.GetMouseButtonDown(0))
         {
             
@@ -58,15 +59,46 @@ public class AgentController : MonoBehaviour
             }
             
         }
-        
 
         sliderHP.value = currentHP;
         currentHPText.GetComponent<Text>().text = string.Format("{0:0}", currentHP);
 
         HPCheck();
         PlayerDeath();
+
+        if (bot == null)
+        {
+            return;
+        }
+        else
+        {
+            if (distance < 4f) //если дистанция меньше указанного значения
+            {
+                if (player.GetComponent<AgentController>().currentHP != 0)
+                {
+                    SetRotarion();
+                    //StartCoroutine(DamageTake());
+                }
+            }
+            else if (distance < 8f) //если дистанция до игрока меньше радиуса видимости
+            {
+                SetRotarion();
+
+            }
+        }
+
+        
+
+        
     }
     
+    void SetRotarion()
+    {
+        Vector3 targetPoint = bot.transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
+    }
+
     private void HPCheck()
     {
         if (currentHP >= maxHP)
@@ -95,6 +127,14 @@ public class AgentController : MonoBehaviour
         uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
     }
 
-    
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "bot")
+        {
+            distance = Vector3.Distance(transform.position, other.transform.position);
+            bot = other.gameObject;
+        }
+    }
+
     
 }

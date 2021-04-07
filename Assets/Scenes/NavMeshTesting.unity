@@ -328,6 +328,8 @@ GameObject:
   - component: {fileID: 80377532}
   - component: {fileID: 80377530}
   - component: {fileID: 80377531}
+  - component: {fileID: 80377535}
+  - component: {fileID: 80377536}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -458,6 +460,35 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80377528}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!135 &80377535
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80377528}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5.26
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &80377536
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80377528}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &80651440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,7 +1865,7 @@ GameObject:
   - component: {fileID: 277833306}
   m_Layer: 0
   m_Name: bot4
-  m_TagString: Untagged
+  m_TagString: bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1875,7 +1906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointToMove: -33
   player: {fileID: 80377528}
-  botNumber: 0
+  botNumber: 4
   currentHPText: {fileID: 0}
   sliderHP: {fileID: 0}
   maxHP: 0
@@ -1959,7 +1990,7 @@ Transform:
   m_Children:
   - {fileID: 160700377}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &346841895
 GameObject:
@@ -2165,9 +2196,11 @@ GameObject:
   - component: {fileID: 384242018}
   - component: {fileID: 384242016}
   - component: {fileID: 384242017}
+  - component: {fileID: 384242022}
+  - component: {fileID: 384242023}
   m_Layer: 0
   m_Name: bot5
-  m_TagString: Untagged
+  m_TagString: bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2208,7 +2241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointToMove: -8
   player: {fileID: 80377528}
-  botNumber: 1
+  botNumber: 5
   currentHPText: {fileID: 1219699436}
   sliderHP: {fileID: 1593039686}
   maxHP: 100
@@ -2292,8 +2325,37 @@ Transform:
   m_Children:
   - {fileID: 1720997667}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &384242022
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384242015}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &384242023
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384242015}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &405201218
 GameObject:
   m_ObjectHideFlags: 0
@@ -5409,7 +5471,7 @@ GameObject:
   - component: {fileID: 998129517}
   m_Layer: 0
   m_Name: bot3
-  m_TagString: Untagged
+  m_TagString: bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5450,7 +5512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointToMove: -175
   player: {fileID: 80377528}
-  botNumber: 0
+  botNumber: 3
   currentHPText: {fileID: 0}
   sliderHP: {fileID: 0}
   maxHP: 0
@@ -5534,7 +5596,7 @@ Transform:
   m_Children:
   - {fileID: 881225678}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1021706065
 GameObject:
@@ -7995,7 +8057,7 @@ GameObject:
   - component: {fileID: 1812672672}
   m_Layer: 0
   m_Name: bot1
-  m_TagString: Untagged
+  m_TagString: bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -8036,7 +8098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointToMove: -78
   player: {fileID: 80377528}
-  botNumber: 0
+  botNumber: 1
   currentHPText: {fileID: 0}
   sliderHP: {fileID: 0}
   maxHP: 0
@@ -8120,7 +8182,7 @@ Transform:
   m_Children:
   - {fileID: 346841896}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848235352
 GameObject:
@@ -8424,7 +8486,7 @@ GameObject:
   - component: {fileID: 1862565336}
   m_Layer: 0
   m_Name: bot2
-  m_TagString: Untagged
+  m_TagString: bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8465,7 +8527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointToMove: -131
   player: {fileID: 80377528}
-  botNumber: 0
+  botNumber: 2
   currentHPText: {fileID: 0}
   sliderHP: {fileID: 0}
   maxHP: 0
@@ -8549,7 +8611,7 @@ Transform:
   m_Children:
   - {fileID: 1497631577}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1870867150
 GameObject:

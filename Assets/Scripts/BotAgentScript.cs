@@ -33,7 +33,7 @@ public class BotAgentScript : MonoBehaviour
 	BotParams botNumber;
 	Botparams paramsBot = new Botparams();
 
-	float visible = 8f;// Видимость бота
+	float visible = 5f;// Видимость бота
 	[Header("Работа с Hp персонажа")]
 	[SerializeField] private Text currentHPText;
 	[SerializeField] private Slider sliderHP;
