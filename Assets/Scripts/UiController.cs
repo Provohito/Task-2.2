@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UiController : MonoBehaviour
 {
-
+    
     public void OpenDiePanel(GameObject panel)
     {
         Time.timeScale = 0;

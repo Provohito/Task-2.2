@@ -11,7 +11,6 @@ public class AgentController : MonoBehaviour
     Camera mainCamera;
 
     NavMeshAgent agent;
-    Animator agentAnimator;
     [Header("Работа с Hp персонажа")]
     [SerializeField] private Text currentHPText;
     [SerializeField] private Slider sliderHP;
@@ -34,7 +33,6 @@ public class AgentController : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        agentAnimator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -60,14 +58,7 @@ public class AgentController : MonoBehaviour
             }
             
         }
-        if (agent.speed > 0)
-        {
-            agentAnimator.SetBool("walk", true);
-        }
-        if (agent.remainingDistance <= 1)
-        {
-            agentAnimator.SetBool("walk", false);
-        }
+        
 
         sliderHP.value = currentHP;
         currentHPText.GetComponent<Text>().text = string.Format("{0:0}", currentHP);
@@ -75,12 +66,13 @@ public class AgentController : MonoBehaviour
         HPCheck();
         PlayerDeath();
     }
+    
     private void HPCheck()
     {
         if (currentHP >= maxHP)
             currentHP = maxHP;
     }
-
+    
     private void PlayerDeath()
     {
         if (currentHP <= minHP)
@@ -90,7 +82,6 @@ public class AgentController : MonoBehaviour
             if (die == false)
             {
                 die = true;
-                StopAllCoroutines();
                 StartCoroutine(DieAgent());
             }
             
@@ -100,12 +91,10 @@ public class AgentController : MonoBehaviour
     IEnumerator DieAgent()
     {
         yield return new WaitForSeconds(1f);
-        agentAnimator.Play("Dying");
-        yield return new WaitForSeconds(4f);
         Destroy(player);
         uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
     }
 
     
-
+    
 }

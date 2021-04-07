@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+enum BotParams : int
+{
+	First = 1,
+	Second = 2,
+	Third = 3,
+	Fourth = 4,
+	Fifth = 5
+}
+
 public class BotAgentScript : MonoBehaviour
 {
     //  Напишите позицию, куда должен идти бот(Брал только по х)
@@ -13,8 +22,6 @@ public class BotAgentScript : MonoBehaviour
 	[SerializeField]
 	GameObject player;
 
-	float rotationSpeed = 4;
-
 	Vector3 startPointBot;
 	Vector3 endPointBot;
 	int timeWait = 3;
@@ -22,7 +29,9 @@ public class BotAgentScript : MonoBehaviour
 
 	bool isTarget;
 
-	Animator botAnimator;
+	[SerializeField]
+	BotParams botNumber;
+	Botparams paramsBot = new Botparams();
 
 	float visible = 8f;// Видимость бота
 	[Header("Работа с Hp персонажа")]
@@ -34,8 +43,6 @@ public class BotAgentScript : MonoBehaviour
 	[SerializeField] private int maxHP;
 	[SerializeField] private int minHP;
 
-	bool die;
-
 	public int currentHP;
 
 	[SerializeField]
@@ -43,12 +50,48 @@ public class BotAgentScript : MonoBehaviour
 	[SerializeField]
 	GameObject diePanel;
 
+	int health;
+	int damage;
+	int speedDamage;
+
 
 	private void Awake()
     {
 		botAgent = GetComponent<NavMeshAgent>();
-		botAnimator = GetComponent<Animator>();
+		SetParams();
 	}
+	void SetParams()
+    {
+        switch ((int)botNumber)
+        {
+			case 1:
+				health = paramsBot.First[0];
+				damage = paramsBot.First[1];
+				speedDamage = paramsBot.First[2];
+				break;
+			case 2:
+				health = paramsBot.Second[0];
+				damage = paramsBot.Second[1];
+				speedDamage = paramsBot.Second[2];
+				break;
+			case 3:
+				health = paramsBot.Third[0];
+				damage = paramsBot.Third[1];
+				speedDamage = paramsBot.Third[2];
+				break;
+			case 4:
+				health = paramsBot.Fourth[0];
+				damage = paramsBot.Fourth[1];
+				speedDamage = paramsBot.Fourth[2];
+				break;
+			case 5:
+				health = paramsBot.Fifth[0];
+				damage = paramsBot.Fifth[1];
+				speedDamage = paramsBot.Fifth[2];
+				break;
+
+		}
+    }
     void Start()
 	{
 		startPointBot = transform.position;
@@ -71,23 +114,22 @@ public class BotAgentScript : MonoBehaviour
 		{
 			isTarget = !isTarget;
 			curTimeout = 0;
+			
 		}
-		
 
+		
 		float distance = Vector3.Distance(transform.position, player.transform.position);
 		if (distance < 2f) //если дистанция меньше указанного значения
 		{
             if (player.GetComponent<AgentController>().currentHP != 0)
 			{ 
-				StartCoroutine(DamageTake());
-				botAnimator.SetBool("isFight", true);
-				player.GetComponent<Animator>().Play("Boxing");
+				//StartCoroutine(DamageTake());
 			}
 		}
 		else if (distance < visible) //если дистанция до игрока меньше радиуса видимости
 		{
 			
-			botAgent.destination = player.transform.position; //и передаем агенту навигации координаты игрока, чтобы идти к нему
+			botAgent.destination = player.transform.position + new Vector3(2, 0, 2); //и передаем агенту навигации координаты игрока, чтобы идти к нему + расстояние, между ботом и игроком
 			SetRotation(player.transform.position);
 		}
 		else
@@ -101,12 +143,12 @@ public class BotAgentScript : MonoBehaviour
 				Move(startPointBot);
 			}
 		}
-
+		
 		sliderHP.value = currentHP;
 		currentHPText.GetComponent<Text>().text = string.Format("{0:0}", currentHP);
 
 
-		
+
 	}
 
 	void Move(Vector3 moveVector)
@@ -120,12 +162,12 @@ public class BotAgentScript : MonoBehaviour
 		Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20 * Time.deltaTime);
 	}
-
-	IEnumerator DamageTake()
+	
+	IEnumerator DamageTake(int _damage, int _damageSpeed)
     {
 		yield return new WaitForSeconds(1f);
-		player.GetComponent<AgentController>().currentHP -= Random.Range(1,15);
-		currentHP -= Random.Range(20, 50);
+		player.GetComponent<AgentController>().currentHP -= UnityEngine.Random.Range(1,15);
+		currentHP -= UnityEngine.Random.Range(20, 50);
 		StopAllCoroutines();
     }
 	private void HPCheck()
@@ -139,7 +181,6 @@ public class BotAgentScript : MonoBehaviour
 		if (currentHP <= minHP)
 		{
 			currentHP = minHP;
-			die = true;
 			StopAllCoroutines();
 			StartCoroutine(DieBot());
 			
@@ -149,14 +190,11 @@ public class BotAgentScript : MonoBehaviour
 	
 	IEnumerator DieBot()
 	{
-
-		botAnimator.Play("Flying Back Death");
-		player.GetComponent<Animator>().Play("Idle");
 		Debug.Log("Die");
 		Destroy(this.gameObject);
-		//uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
+		uiController.GetComponent<UiController>().OpenDiePanel(diePanel);
 		yield return new WaitForSeconds(0.5f);
 	}
 
-
+	
 }
