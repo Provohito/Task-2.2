@@ -24,8 +24,6 @@ public class BotAgentScript : MonoBehaviour
 
 	Vector3 startPointBot;
 	Vector3 endPointBot;
-	int timeWait = 3;
-	float curTimeout = 0;
 
 	bool isTarget;
 
@@ -40,7 +38,6 @@ public class BotAgentScript : MonoBehaviour
 
 
 	[Space(10)]
-	[SerializeField] private int maxHP;
 	[SerializeField] private int minHP;
 
 	public int currentHP;
@@ -50,6 +47,8 @@ public class BotAgentScript : MonoBehaviour
 	[SerializeField]
 	GameObject diePanel;
 
+	GameObject gun;
+
 	int health;
 	int damage;
 	int speedDamage;
@@ -58,10 +57,11 @@ public class BotAgentScript : MonoBehaviour
 	private void Awake()
     {
 		botAgent = GetComponent<NavMeshAgent>();
+		gun = transform.GetChild(0).gameObject;
 		SetParams();
 	}
 	void SetParams()
-    {
+    {// Проверка и получение параметров ботов
         switch ((int)botNumber)
         {
 			case 1:
@@ -97,10 +97,10 @@ public class BotAgentScript : MonoBehaviour
 		startPointBot = transform.position;
 		endPointBot = new Vector3(pointToMove, transform.position.y, transform.position.z);
 
-		sliderHP.maxValue = maxHP;
+		sliderHP.maxValue = health;
 		sliderHP.minValue = minHP;
 
-		currentHP = maxHP;
+		currentHP = health;
 
 	}
 
@@ -109,28 +109,23 @@ public class BotAgentScript : MonoBehaviour
 		HPCheck();
 		BotDeath();
 
-		curTimeout += Time.deltaTime;
-		if (!botAgent.hasPath & curTimeout > timeWait)
-		{
-			isTarget = !isTarget;
-			curTimeout = 0;
-			
-		}
+
 
 		
 		float distance = Vector3.Distance(transform.position, player.transform.position);
-		if (distance < 2f) //если дистанция меньше указанного значения
-		{
-            if (player.GetComponent<AgentController>().currentHP != 0)
-			{ 
-				//StartCoroutine(DamageTake());
-			}
-		}
-		else if (distance < visible) //если дистанция до игрока меньше радиуса видимости
+		
+		if (distance < visible) //если дистанция до игрока меньше радиуса видимости
 		{
 			
-			botAgent.destination = player.transform.position + new Vector3(2, 0, 2); //и передаем агенту навигации координаты игрока, чтобы идти к нему + расстояние, между ботом и игроком
+			botAgent.destination = player.transform.position + new Vector3(3, 0, 3); //и передаем агенту навигации координаты игрока, чтобы идти к нему + расстояние, между ботом и игроком
 			SetRotation(player.transform.position);
+			if (distance < 4f) //если дистанция меньше указанного значения
+			{
+				if (player.GetComponent<AgentController>().currentHP != 0)
+				{
+					StartCoroutine(DamageTake(damage, speedDamage));
+				}
+			}
 		}
 		else
 		{
@@ -165,15 +160,15 @@ public class BotAgentScript : MonoBehaviour
 	
 	IEnumerator DamageTake(int _damage, int _damageSpeed)
     {
-		yield return new WaitForSeconds(1f);
-		player.GetComponent<AgentController>().currentHP -= UnityEngine.Random.Range(1,15);
-		currentHP -= UnityEngine.Random.Range(20, 50);
+		yield return new WaitForSeconds(_damageSpeed);
+		gun.transform.GetChild(0).GetComponent<BulletController>().Shoot();
+		player.GetComponent<AgentController>().currentHP -= _damage;
 		StopAllCoroutines();
     }
 	private void HPCheck()
 	{
-		if (currentHP >= maxHP)
-			currentHP = maxHP;
+		if (currentHP >= health)
+			currentHP = health;
 	}
 
 	private void BotDeath()

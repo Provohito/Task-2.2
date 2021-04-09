@@ -77,7 +77,6 @@ public class AgentController : MonoBehaviour
                 if (player.GetComponent<AgentController>().currentHP != 0)
                 {
                     SetRotarion();
-                    //StartCoroutine(DamageTake());
                 }
             }
             else if (distance < 8f) //если дистанция до игрока меньше радиуса видимости
@@ -136,5 +135,5 @@ public class AgentController : MonoBehaviour
         }
     }
 
-    
+
 }
